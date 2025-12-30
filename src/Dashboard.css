@@ -15,7 +15,7 @@ body.has-critical .compact-stat.disk {
 }
 
 .dashboard-title {
-  color: white;
+  color: magenta;
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 30px;
@@ -1820,7 +1820,7 @@ body.has-critical * {
 
 /* Métricas más visibles */
 .noc-mode .metric-value {
-  font-size:   2rem;
+  font-size: 2rem;
   font-weight: 800;
 }
 
