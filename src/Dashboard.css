@@ -24,7 +24,7 @@ body.has-critical .compact-stat.disk {
 
 .dashboard-header {
   position: sticky;
-  top: 0;
+  top: 10px;
   z-index: 50;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
@@ -804,7 +804,6 @@ body.has-critical .compact-stat.disk {
   width: 100%;
   padding: 12px 8px;
   border: none;
-  margin-top: 5px;
   border-radius: 25px;
   font-size: 14px;
   background: rgba(255, 255, 255, 0.95);
@@ -1504,6 +1503,22 @@ body.has-critical * {
   scrollbar-color: #ef4444 rgba(11, 16, 36, 0.55);
 }
 
+/* ===== ocultar critital-text y halo en movil ===== */
+@media (max-width: 768px) {
+  .critical-text {
+    display: none;
+  }
+  .critical-halo-wrapper {
+    display: none;
+  }
+  .critical-halo {
+    display: none;
+  }
+  .critical-halo.orange {
+    display: none;
+  }
+}
+
 .critical-halo-wrapper {
   position: fixed;
   top: 0;
@@ -1708,7 +1723,7 @@ body.has-critical * {
 /* HEADER AUTO-HIDE MOBILE */
 .dashboard-header {
   position: sticky;
-  top: 0;
+  top: 10px;
   z-index: 100;
   transition: transform 0.35s ease, opacity 0.35s ease;
 }
@@ -1754,11 +1769,17 @@ body.has-critical * {
   }
 }
 /* ===== CRITICAL INDICATOR ===== */
+
+@media (min-width: 768px) {
+  .critical-indicator {
+    display: none;
+  }
+}
 .critical-indicator {
   position: fixed;
   top: 12px;
   right: 12px;
-  z-index: 1000;
+  z-index: 1000; /* ===== ocultar critital-text y halo en movil ===== */
   background: rgba(220, 38, 38, 0.95);
   color: white;
   padding: 8px 14px;
@@ -1780,4 +1801,49 @@ body.has-critical * {
   100% {
     transform: scale(1);
   }
+}
+
+/* Ocultar elementos innecesarios */
+.noc-mode .search-container,
+.noc-mode .dashboard-subtitle,
+.noc-mode .footer-links {
+  display: none;
+}
+
+/* Cards más compactas */
+.noc-mode .server-card {
+  padding: 12px;
+  border-radius: 12px;
+}
+
+/* Métricas más visibles */
+.noc-mode .metric-value {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+/* Menos espacios */
+.noc-mode .server-grid {
+  gap: 12px;
+}
+
+/* Halo crítico más fuerte */
+.noc-mode.has-critical::before {
+  filter: blur(80px);
+  opacity: 0.9;
+}
+
+/* Botón NOC */
+.noc-toggle {
+  background: #020617;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.noc-toggle:hover {
+  background: #020617;
+  border-color: #38bdf8;
 }

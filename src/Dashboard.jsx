@@ -48,6 +48,7 @@ function formatUptime(seconds) {
 }
 
 export default function Dashboard() {
+  const [nocMode, setNocMode] = useState(false);
   const criticalRef = useRef(null);
   const [hasScrolledToCritical, setHasScrolledToCritical] = useState(false);
 
@@ -188,11 +189,11 @@ export default function Dashboard() {
   );
 
   const hasCriticalGlobal = Object.values(metrics).some(
-    (m) => m.cpu >= 85 || m.ram >= 90 || m.disk >= 95
+    (m) => m.cpu >= 5 || m.ram >= 90 || m.disk >= 95
   );
 
   const criticalServers = Object.entries(metrics).filter(
-    ([_, m]) => m.cpu >= 85 || m.ram >= 90 || m.disk >= 95
+    ([_, m]) => m.cpu >= 5 || m.ram >= 90 || m.disk >= 95
   );
 
   const hasAnyCritical = Object.values(metrics).some(
@@ -206,9 +207,27 @@ export default function Dashboard() {
 
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  const toggleNocMode = async () => {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+      setNocMode(true);
+    } else {
+      await document.exitFullscreen();
+      setNocMode(false);
+      const toggleNocMode = async () => {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+          setNocMode(true);
+        } else {
+          await document.exitFullscreen();
+          setNocMode(false);
+        }
+      };
+    }
+  };
+
   // =========================
-  // 🚨 useEffect #3 → banner crítico
-  // 👇 AQUÍ VA EXACTAMENTE 👇
+  // 🚨 useEffect Inicio
   // =========================
   useEffect(() => {
     if (hasCriticalGlobal) {
@@ -256,11 +275,26 @@ export default function Dashboard() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const handleExit = () => {
+      if (!document.fullscreenElement) {
+        setNocMode(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleExit);
+    return () => document.removeEventListener("fullscreenchange", handleExit);
+  }, []);
+
   // =========================
-  // 🖼️ JSX
+  // 🚨 useEffect Final
+  // =========================
+
+  // =========================
+  // 🖼️ Pagina
   // =========================
   return (
-    <div className="dashboard">
+    <div className={`dashboard ${nocMode ? "noc-mode" : ""}`}>
       {hasCriticalGlobal && (
         <div
           className={`critical-halo-wrapper level-${Math.min(
@@ -285,23 +319,47 @@ export default function Dashboard() {
 
       <div className={`dashboard-header ${hideHeader ? "hide" : ""}`}>
         <div className="header-left">
+          {hasAnyCritical && (
+            <div
+              className="critical-indicator"
+              onClick={() => {
+                const critical = document.querySelector(
+                  ".server-card .critical"
+                );
+                if (critical) {
+                  critical.closest(".server-card").scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
+                }
+              }}
+            >
+              🚨 CRÍTICO
+            </div>
+          )}
+
           <h1 className="dashboard-title">
+            <button className="noc-toggle" onClick={toggleNocMode}>
+              {nocMode ? "❌ Salir" : "🖥️ Modo"}
+            </button>
             <span className="dashboard-icon">🖥️</span>
             SERVER MONITORING DASHBOARD
           </h1>
+
           <p className="dashboard-subtitle">
             Monitoreo en tiempo real de servidores Windows/Linux
           </p>
         </div>
-
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="🔍 Buscar servidor por nombre..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="search-input"
-          />
+        <div className="dashboard-header">
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="🔍 Buscar servidor por nombre..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="search-input"
+            />
+          </div>
         </div>
       </div>
 
@@ -648,22 +706,6 @@ export default function Dashboard() {
             </div>
           );
         })}
-        {hasAnyCritical && (
-          <div
-            className="critical-indicator"
-            onClick={() => {
-              const critical = document.querySelector(".server-card .critical");
-              if (critical) {
-                critical.closest(".server-card").scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                });
-              }
-            }}
-          >
-            🚨 CRÍTICO
-          </div>
-        )}
 
         {/* Mobile Floating Menu */}
         <div className="mobile-menu">
