@@ -126,7 +126,7 @@ body.has-critical .compact-stat.disk {
   justify-content: space-between;
   align-items: flex-start;
   border-bottom: 2px solid #f3f4f6;
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }
 
 .server-title h3 {
@@ -1041,7 +1041,7 @@ body.has-critical .compact-stat.disk {
   justify-content: space-between;
   align-items: flex-start;
   border-bottom: 1px solid #f3f4f6;
-  padding-bottom: 12px;
+  padding-bottom: 5px;
 }
 
 .server-title h3 {
@@ -1195,7 +1195,7 @@ body.has-critical .compact-stat.disk {
 .detailed-info {
   background: #f9fafb;
   border-radius: 10px;
-  padding: 16px;
+  padding: 10px;
   border: 1px solid #e5e7eb;
   font-size: 13px;
 }
@@ -1820,7 +1820,7 @@ body.has-critical * {
 
 /* Métricas más visibles */
 .noc-mode .metric-value {
-  font-size: 2rem;
+  font-size:   2rem;
   font-weight: 800;
 }
 
