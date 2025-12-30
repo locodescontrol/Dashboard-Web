@@ -199,6 +199,7 @@ export default function Dashboard() {
 
   const [hideHeader, setHideHeader] = useState(false);
   const lastScrollY = useRef(0);
+
   // =========================
   // 🚨 useEffect #3 → banner crítico
   // 👇 AQUÍ VA EXACTAMENTE 👇
