@@ -24,7 +24,7 @@ body.has-critical .compact-stat.disk {
 
 .dashboard-header {
   position: sticky;
-  top: 10px;
+  top: 0;
   z-index: 50;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
@@ -804,6 +804,7 @@ body.has-critical .compact-stat.disk {
   width: 100%;
   padding: 12px 8px;
   border: none;
+  margin-top: 5px;
   border-radius: 25px;
   font-size: 14px;
   background: rgba(255, 255, 255, 0.95);
@@ -1497,6 +1498,7 @@ body.has-critical ::-webkit-scrollbar-thumb {
 * {
   scrollbar-width: thin;
   scrollbar-color: #4f7cff rgba(11, 16, 36, 0.55);
+  scrollbar-base-color: #020617;
 }
 
 body.has-critical * {
@@ -1723,7 +1725,7 @@ body.has-critical * {
 /* HEADER AUTO-HIDE MOBILE */
 .dashboard-header {
   position: sticky;
-  top: 10px;
+  top: 0;
   z-index: 100;
   transition: transform 0.35s ease, opacity 0.35s ease;
 }

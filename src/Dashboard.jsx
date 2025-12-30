@@ -189,15 +189,15 @@ export default function Dashboard() {
   );
 
   const hasCriticalGlobal = Object.values(metrics).some(
-    (m) => m.cpu >= 5 || m.ram >= 90 || m.disk >= 95
+    (m) => m.cpu >= 85 || m.ram >= 90 || m.disk >= 95
   );
 
   const criticalServers = Object.entries(metrics).filter(
-    ([_, m]) => m.cpu >= 5 || m.ram >= 90 || m.disk >= 95
+    ([_, m]) => m.cpu >= 85 || m.ram >= 90 || m.disk >= 95
   );
 
   const hasAnyCritical = Object.values(metrics).some(
-    (m) => m && (m.cpu >= 5 || m.ram >= 90 || m.disk >= 95)
+    (m) => m && (m.cpu >= 85 || m.ram >= 90 || m.disk >= 95)
   );
 
   const criticalCount = criticalServers.length;
@@ -294,7 +294,7 @@ export default function Dashboard() {
   // 🖼️ Pagina
   // =========================
   return (
-    <div className={`dashboard ${nocMode ? "noc-mode" : ""}`}>
+    <div className={`dashboard ${nocMode ? "noc-mode" : ""} `}>
       {hasCriticalGlobal && (
         <div
           className={`critical-halo-wrapper level-${Math.min(
@@ -350,16 +350,15 @@ export default function Dashboard() {
             Monitoreo en tiempo real de servidores Windows/Linux
           </p>
         </div>
-        <div className="dashboard-header">
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder="🔍 Buscar servidor por nombre..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="search-input"
-            />
-          </div>
+
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="🔍 Buscar servidor por nombre..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
         </div>
       </div>
 
