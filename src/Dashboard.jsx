@@ -214,15 +214,6 @@ export default function Dashboard() {
     } else {
       await document.exitFullscreen();
       setNocMode(false);
-      const toggleNocMode = async () => {
-        if (!document.fullscreenElement) {
-          await document.documentElement.requestFullscreen();
-          setNocMode(true);
-        } else {
-          await document.exitFullscreen();
-          setNocMode(false);
-        }
-      };
     }
   };
 
