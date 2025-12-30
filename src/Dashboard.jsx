@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import servers from "./data/servers";
 import "./Dashboard.css";
+const [hideHeader, setHideHeader] = useState(false);
+const lastScrollY = useRef(0);
 
 /* Helpers para alertas */
 function getAlertLevel(value, warning, critical) {
@@ -219,6 +221,25 @@ export default function Dashboard() {
     }
   }, [metrics, status, hasScrolledToCritical]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth > 768) return;
+
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        setHideHeader(true); // bajando
+      } else {
+        setHideHeader(false); // subiendo
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // =========================
   // 🖼️ JSX
   // =========================
@@ -246,7 +267,8 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="dashboard-header">
+      <div className={`dashboard-header ${hideHeader ? "hide" : ""}`}>
+
         <div className="header-left">
           <h1 className="dashboard-title">
             <span className="dashboard-icon">🖥️</span>
