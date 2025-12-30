@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import servers from "./data/servers";
 import "./Dashboard.css";
-const [hideHeader, setHideHeader] = useState(false);
-const lastScrollY = useRef(0);
 
 /* Helpers para alertas */
 function getAlertLevel(value, warning, critical) {
@@ -199,6 +197,8 @@ export default function Dashboard() {
 
   const criticalCount = criticalServers.length;
 
+  const [hideHeader, setHideHeader] = useState(false);
+  const lastScrollY = useRef(0);
   // =========================
   // 🚨 useEffect #3 → banner crítico
   // 👇 AQUÍ VA EXACTAMENTE 👇
@@ -268,7 +268,6 @@ export default function Dashboard() {
       )}
 
       <div className={`dashboard-header ${hideHeader ? "hide" : ""}`}>
-
         <div className="header-left">
           <h1 className="dashboard-title">
             <span className="dashboard-icon">🖥️</span>
