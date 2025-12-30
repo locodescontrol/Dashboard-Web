@@ -12,7 +12,7 @@ const servers = [
   {
     name: "Servidor Minecraft",
     page: "https://monitor.chrisdev.xyz/",
-    api: "https://api.chrisdev.xyz/metrics",
+    api: "http://31.97.130.91:9100/metrics",
   },
   {
     name: "Servidor Backup",
