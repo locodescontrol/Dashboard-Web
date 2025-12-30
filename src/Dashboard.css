@@ -1718,5 +1718,66 @@ body.has-critical * {
   .dashboard-header.hide {
     transform: translateY(-110%);
     opacity: 0;
+  } /* ===== MOBILE FLOATING MENU ===== */
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu {
+      position: fixed;
+      bottom: 18px;
+      right: 16px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mobile-menu button {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: #1f2937;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .mobile-menu button:hover {
+      transform: scale(1.08);
+      background: #374151;
+    }
+  }
+}
+/* ===== CRITICAL INDICATOR ===== */
+.critical-indicator {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  animation: critical-pulse 1.2s infinite;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+}
+
+@keyframes critical-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
   }
 }

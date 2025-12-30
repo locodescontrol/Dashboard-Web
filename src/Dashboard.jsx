@@ -195,10 +195,16 @@ export default function Dashboard() {
     ([_, m]) => m.cpu >= 85 || m.ram >= 90 || m.disk >= 95
   );
 
+  const hasAnyCritical = Object.values(metrics).some(
+    (m) => m && (m.cpu >= 5 || m.ram >= 90 || m.disk >= 95)
+  );
+
   const criticalCount = criticalServers.length;
 
   const [hideHeader, setHideHeader] = useState(false);
   const lastScrollY = useRef(0);
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // =========================
   // 🚨 useEffect #3 → banner crítico
@@ -239,6 +245,15 @@ export default function Dashboard() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // =========================
@@ -633,6 +648,49 @@ export default function Dashboard() {
             </div>
           );
         })}
+        {hasAnyCritical && (
+          <div
+            className="critical-indicator"
+            onClick={() => {
+              const critical = document.querySelector(".server-card .critical");
+              if (critical) {
+                critical.closest(".server-card").scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }
+            }}
+          >
+            🚨 CRÍTICO
+          </div>
+        )}
+
+        {/* Mobile Floating Menu */}
+        <div className="mobile-menu">
+          {showScrollTop && (
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              ⬆️
+            </button>
+          )}
+
+          <button
+            onClick={() => {
+              const critical = document.querySelector(".server-card .critical");
+              if (critical) {
+                critical.closest(".server-card").scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }
+            }}
+          >
+            🚨
+          </button>
+
+          <button onClick={() => window.location.reload()}>🔄</button>
+        </div>
       </div>
 
       {filteredServers.length === 0 && !loading && (
