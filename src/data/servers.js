@@ -16,7 +16,7 @@ const servers = [
   },
   {
     name: "Servidor Backup",
-    page: "https://monitor.chrisdev.xyz/",
+    page: "https://dashboard.chrisdev.xyz/",
     api: "https://api.chrisdev.xyz/metrics",
   },
 ];
