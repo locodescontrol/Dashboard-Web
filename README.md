@@ -1,70 +1,200 @@
-# Getting Started with Create React App
+# 🖥️ Server Monitoring Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dashboard web avanzado para **monitoreo en tiempo real de servidores Linux / Windows**, con alertas visuales, métricas detalladas y soporte para múltiples servidores usando una API propia en Python.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Características
 
-### `npm start`
+- 📊 Monitoreo en tiempo real (CPU, RAM, DISK)
+- 🟢 Detección de servidores ONLINE / OFFLINE
+- 🚨 Alertas visuales por severidad (Normal / Warning / Critical)
+- 🌈 Alertas visuales por tipo:
+  - ⚡ CPU (naranja)
+  - 🧠 RAM (rosa)
+  - 💾 DISK (rojo)
+- 🔴 Halo crítico animado en la parte superior (modo NOC)
+- 🔍 Buscador de servidores
+- 📱 Diseño responsive (PC / Tablet / Mobile)
+- 🧠 Información detallada del sistema:
+  - Hostname
+  - Arquitectura
+  - Procesos
+  - Red
+  - Uptime
+- 🧩 Soporte para múltiples servidores
+- 🌐 Vista embebida del panel individual por servidor (iframe)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🏗️ Arquitectura del Proyecto
 
-### `npm test`
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+server-monitoring/
+│
+├── backend/
+│ ├── agent_metrics.py # API de métricas (Python + Flask)
+│
+├── frontend/
+│ ├── src/
+│ │ ├── App.jsx # Dashboard principal
+│ │ ├── Dashboard.css # Estilos y animaciones
+│ │ ├── data/
+│ │ │ └── servers.js # Lista de servidores
+│ │ └── main.jsx
+│ └── package.json
+│
+└── README.md
 
-### `npm run build`
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ⚙️ Backend – Agente de Métricas (Python)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Requisitos
 
-### `npm run eject`
+- Python 3.9+
+- Linux / Windows
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Instalación
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+python3 -m venv venv
+source venv/bin/activate   # Linux
+venv\Scripts\activate      # Windows
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+pip install flask psutil flask-cors
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Ejecutar el agente
 
-## Learn More
+```bash
+python agent_metrics.py
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Por defecto expone la API en:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+http://IP_DEL_SERVIDOR:9100/metrics
+```
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🌐 Frontend – Dashboard (React)
 
-### Analyzing the Bundle Size
+### Requisitos
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Node.js 18+
+- npm
 
-### Making a Progressive Web App
+### Instalación
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+cd frontend
+npm install
+```
 
-### Advanced Configuration
+### Ejecutar en desarrollo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm run dev
+```
 
-### Deployment
+Accede en:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
+http://localhost:5173
+```
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🗂️ Configuración de Servidores
+
+Archivo:
+
+```
+src/data/servers.js
+```
+
+Ejemplo:
+
+```js
+const servers = [
+  {
+    name: "DokPloy VPS",
+    api: "http://192.168.1.10:9100/metrics",
+    page: "http://192.168.1.10:3000",
+  },
+  {
+    name: "Servidor Casa",
+    api: "http://192.168.1.18:9100/metrics",
+    page: "http://192.168.1.18:3000",
+  },
+];
+
+export default servers;
+```
+
+---
+
+## 🚨 Sistema de Alertas
+
+### Umbrales por defecto
+
+| Métrica | Warning | Critical |
+| ------- | ------- | -------- |
+| CPU     | 70%     | 85%      |
+| RAM     | 75%     | 90%      |
+| DISK    | 80%     | 95%      |
+
+### Alertas visuales
+
+- Halo superior animado cuando hay críticos
+- Animaciones diferenciadas por tipo de métrica
+- Scroll automático al servidor crítico
+- Texto de estado crítico visible en el header
+
+---
+
+## 🎨 Diseño y UX
+
+- Animaciones suaves
+- Transiciones sin saltos
+- Modo NOC (alta visibilidad)
+- Diseño limpio y profesional
+- Inspirado en dashboards tipo Grafana / Datadog
+
+---
+
+## 🔐 Seguridad (Recomendado)
+
+- Colocar el backend detrás de un firewall
+- Usar HTTPS con Nginx / Caddy
+- Limitar acceso por IP
+- No exponer la API a internet sin protección
+
+---
+
+## 🚀 Próximas Mejoras (Ideas)
+
+- 📈 Gráficos históricos
+- 📜 Historial de alertas
+- 🔔 Notificaciones (Discord / Telegram)
+- 🌗 Modo claro / oscuro
+- 🧭 Rotación automática de servidores críticos
+- 👥 Multiusuario
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado por **Christofer Rodríguez (SukeK)**
+Proyecto personal de monitoreo y aprendizaje avanzado.
+
+---
+
+## 🧠 Nota Final
+
+> _Cada dashboard que monitorea bien, evita problemas antes de que ocurran._
