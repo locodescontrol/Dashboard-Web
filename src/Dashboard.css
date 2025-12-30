@@ -435,7 +435,7 @@ body.has-critical .compact-stat.disk {
 }
 
 .dashboard-title {
-  color: white;
+  color: magenta;
   font-size: 2.2rem;
   margin: 0 0 8px 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -771,7 +771,7 @@ body.has-critical .compact-stat.disk {
 }
 
 .dashboard-title {
-  color: white;
+  color: magenta;
   font-size: 2rem;
   margin: 0 0 5px 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
